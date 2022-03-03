@@ -17,10 +17,10 @@ public class ClaimRestController {
 	 ServiceClaimIT  service;
 	
 	
-@PostMapping("/add-claim")
+@PostMapping("/add-claim/{idUser}")
 @ResponseBody
-public Claim addClaim(@RequestBody Claim c){
- Claim x=service.addClaim(c);
+public Claim addClaim(@RequestBody Claim c,@PathVariable("idUser")Long idUser){
+ Claim x=service.addClaim(c,idUser);
  return x;
 	}
 	
@@ -54,11 +54,15 @@ public List<Claim>getClaimsBytype(@PathVariable("Claim-type") Type type){
 	 
 	 
 	
-	
-	
-	
-	
-	
-	
 }}
+//@GetMapping("retreive-claims-byIdUser/{iduser}")
+//@ResponseBody
+//public List<Claim>getClaimsBytype(@PathVariable("iduser") Long iduser){
+//	 return service.retreiveClaimUserid(iduser);
+//	 
+//	
+//
+//	
+//}}
+
 
