@@ -16,9 +16,10 @@ import tn.esprit.spring.entities.Type;
 public interface ClaimRepository extends JpaRepository <Claim,Long>{
  @Query("SELECT c FROM Claim c WHERE c.type=:type")
  List<Claim> retreiveClaimsByType(@Param("type")Type type);
- @Query("Select c FROM Claim c WHERE  c.dateClaim >?1")
- List<Claim>  retreiveClaimByDate(@Param("dateClaim")Date date);
- 
+// @Query("Select c FROM Claim c WHERE  c.dateClaim >?1")
+// List<Claim>  retreiveClaimByDate(@Param("dateClaim")Date date);
+// 
+// 
 } 
 
 

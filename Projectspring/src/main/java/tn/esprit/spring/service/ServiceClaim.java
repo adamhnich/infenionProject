@@ -1,17 +1,22 @@
 package tn.esprit.spring.service;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entities.Claim;
+import tn.esprit.spring.entities.FrequentClaims;
 import tn.esprit.spring.entities.Type;
 import tn.esprit.spring.entities.User;
 import tn.esprit.spring.repository.ClaimRepository;
+import tn.esprit.spring.repository.FreqentlyClaimsRepository;
 import tn.esprit.spring.repository.UserRepository;
 @Service
 public class ServiceClaim  implements ServiceClaimIT{
@@ -19,20 +24,28 @@ public class ServiceClaim  implements ServiceClaimIT{
 	ClaimRepository repo;
 	@Autowired
 	UserRepository repoUser;
+	@Autowired
+	ISendEmailService sendemailservice;
+	@Autowired
+	FreqentlyClaimsRepository repofqClaims;
+	@Autowired
+	IServiceFqClaims servicefqclaims;
 
 	@Override
 	public Claim addClaim(Claim c,Long idUser) {
 	
 		User user=repoUser.getById(idUser);
 	   c.setUser(user);
-		
+	 
+	  
 		
 	
-		
+	   sendemailservice.sendSimpleEmail("mohamedamine.benothmane@esprit.tn",  c.getDescription()  ,"reclamation");
+	   
 		 return repo.save(c);
 		
 		
-	
+		 
 
 	
 		
@@ -40,12 +53,7 @@ public class ServiceClaim  implements ServiceClaimIT{
 	}
 	
 
-	@Override
-	public void deleteClaim(Long id) {
-		 repo.deleteById(id);	  
-		
-	}
-
+	
 	@Override
 	public Claim updateClaim(Claim c,Long idUser) {
 		// TODO Auto-generated method stub
@@ -75,13 +83,36 @@ public class ServiceClaim  implements ServiceClaimIT{
 		repo.retreiveClaimsByType(type).forEach(x-> {claims.add(x);});
 		return  claims;
 	}
-
+	
+	
+	
 	@Override
-	public List<Claim> retreiveClaimByDate(Date date) {
-		List<Claim> claims=new ArrayList<Claim>();
-		repo.retreiveClaimByDate(date).forEach(x->{claims.add(x);});
-		return null;
+	public void setResponsemessage(Long id){
+		 Claim claim=repo.findById(id).orElse(null);
+		 
+		 String topic=claim.getTopicOfclaim();
+		FrequentClaims result= repofqClaims.findByTitle(topic);
+		claim.setStatus(true);
+		claim.setResponse(result.getSolution());
+		repo.save(claim);
+		 
+		
+			
+		}
+
+
+
+	
 	}
+
+//	@Override
+//	public List<Claim> retreiveClaimByDate(Date date) {
+//		List<Claim> claims=new ArrayList<Claim>();
+//		repo.retreiveClaimByDate(date).forEach(x->{claims.add(x);});
+//		return null;
+//	}
+//	
+//	 
 
 
 //	@Override
@@ -94,4 +125,4 @@ public class ServiceClaim  implements ServiceClaimIT{
 
 	
 
-}
+

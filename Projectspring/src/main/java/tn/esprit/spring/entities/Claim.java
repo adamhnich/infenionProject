@@ -1,6 +1,8 @@
 package tn.esprit.spring.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +17,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +27,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+
 import java.util.Set;
 
 @Entity
@@ -45,13 +50,22 @@ public class Claim  implements Serializable{
 @GeneratedValue (strategy = GenerationType.IDENTITY)
 @Column(name="idClaim")
 private Long idClaim;
-@Temporal(TemporalType.DATE)
-private Date dateClaim;
+
+
+LocalDate localDate = LocalDate.now();
+@NotEmpty
+@Size(min=2 ,message=" description hould have at least 2 carac")
 private String description;
+
+@NotNull (message="Type should not be null ")
 @Enumerated(EnumType.STRING)
+
 private Type  type;
-@Enumerated(EnumType.STRING)
-private Status  status;
+private String topicOfclaim;
+private String response;
+
+private boolean  status;
+
 @ManyToOne
 private User user;
 }

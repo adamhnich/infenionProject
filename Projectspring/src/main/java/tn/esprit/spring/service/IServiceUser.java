@@ -7,3 +7,4 @@ import tn.esprit.spring.entities.User;
 public interface IServiceUser {
    User addUser(User user);
 }
+ 
