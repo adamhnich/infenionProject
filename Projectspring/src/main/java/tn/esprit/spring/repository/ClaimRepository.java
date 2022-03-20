@@ -19,7 +19,7 @@ public interface ClaimRepository extends JpaRepository <Claim,Long>{
 // @Query("Select c FROM Claim c WHERE  c.dateClaim >?1")
 // List<Claim>  retreiveClaimByDate(@Param("dateClaim")Date date);
 // 
-// 
+
 } 
 
 

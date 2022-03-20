@@ -52,8 +52,8 @@ public class Claim  implements Serializable{
 private Long idClaim;
 
 
-LocalDate localDate = LocalDate.now();
-@NotEmpty
+LocalDate date = LocalDate.now();
+@NotNull(message="the description is required")
 @Size(min=2 ,message=" description hould have at least 2 carac")
 private String description;
 

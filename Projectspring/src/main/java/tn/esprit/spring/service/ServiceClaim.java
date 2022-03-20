@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.time.LocalTime;
 
@@ -63,9 +64,9 @@ public class ServiceClaim  implements ServiceClaimIT{
 	}
 
 	@Override
-	public Claim retrieveClaims(Long id) {
-		Claim c=repo.findById(id).orElse(null);
-		return c;
+	public Optional<Claim> retrieveClaims(Long id) {
+	
+		return repo.findById(id);
 	}
 
 	@Override

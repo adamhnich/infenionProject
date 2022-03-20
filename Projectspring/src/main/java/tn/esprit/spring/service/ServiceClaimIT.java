@@ -1,6 +1,7 @@
 package tn.esprit.spring.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import tn.esprit.spring.entities.Claim;
 import tn.esprit.spring.entities.Type;
@@ -12,7 +13,7 @@ public interface ServiceClaimIT {
 //	 void deleteClaim(Long id);
 	 Claim updateClaim(Claim c,Long idUser);
 //	List<Claim>retreiveClaimUserid(Long idUser);
-	 Claim retrieveClaims(Long id);
+	 Optional<Claim> retrieveClaims(Long id);
 	 List<Claim> retrieveAllClaims();
 	  List<Claim> retreiveClaimsByType(Type type);
 //	  List<Claim>retreiveClaimByDate(Date date);

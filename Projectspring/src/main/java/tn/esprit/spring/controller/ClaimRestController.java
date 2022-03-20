@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
-import tn.esprit.spring.Exception.*;
 import tn.esprit.spring.entities.Claim;
 import tn.esprit.spring.entities.Type;
+import tn.esprit.spring.exceptions.ResourceNotFoundException;
+import tn.esprit.spring.exceptions.GlobalExceptionHandler;
 import tn.esprit.spring.repository.ClaimRepository;
 import tn.esprit.spring.service.ServiceClaimIT;
 
@@ -28,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+@Validated
 @RestController
 @RequestMapping("/claim")
 
@@ -56,7 +60,7 @@ public List<Claim>getClaims(){
 
 @DeleteMapping("/delete-claim/{id}")
 public ResponseEntity<Map<String, Boolean>> deleteClaim(@PathVariable Long id){
-	Claim claim = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException());
+	Claim claim = repo.findById(id).orElse(null);
 			
 	
 	repo.delete(claim);
@@ -65,16 +69,18 @@ public ResponseEntity<Map<String, Boolean>> deleteClaim(@PathVariable Long id){
 	return ResponseEntity.ok(response);
 }
 
-@GetMapping("retreive-claim/{claim-id}")
-@ResponseBody
-public Claim getClaim(@PathVariable("claim-id")Long claimId){
-	return service.retrieveClaims(claimId);
-}
+//@GetMapping("retreive-claim/{claim-id}")
+//@ResponseBody
+//public Claim getClaim(@PathVariable("claim-id")Long claimId){
+//	return service.retrieveClaims(claimId);
+//}
 @GetMapping("/retreive-claimById/{id}")
-public ResponseEntity<Claim> getClaimById(@PathVariable Long id) {
-	Claim claim = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException());
-			
-	return ResponseEntity.ok(claim);
+public ResponseEntity<Claim> getClaimById(@PathVariable Long id) throws ResourceNotFoundException {
+	 Optional<Claim> optionalClaim = service.retrieveClaims(id);
+	 if (!optionalClaim.isPresent()) {
+	      throw new ResourceNotFoundException("No Claim found with the id: " + id);
+	    }	
+	return  new ResponseEntity<>(optionalClaim.get(), HttpStatus.OK);
 }
 @GetMapping("retreive-claim-byType/{Claim-type}")
 @ResponseBody
