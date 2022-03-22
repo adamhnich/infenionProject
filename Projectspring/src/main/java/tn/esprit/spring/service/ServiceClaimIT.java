@@ -11,7 +11,7 @@ public interface ServiceClaimIT {
 	 Claim addClaim(Claim c,Long idUser);
 	 
 //	 void deleteClaim(Long id);
-	 Claim updateClaim(Claim c,Long idUser);
+//	void updateClaim(Long idClaim);
 //	List<Claim>retreiveClaimUserid(Long idUser);
 	 Optional<Claim> retrieveClaims(Long id);
 	 List<Claim> retrieveAllClaims();

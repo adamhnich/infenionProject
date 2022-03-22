@@ -59,11 +59,13 @@ public List<Claim>getClaims(){
 }
 
 @DeleteMapping("/delete-claim/{id}")
-public ResponseEntity<Map<String, Boolean>> deleteClaim(@PathVariable Long id){
-	Claim claim = repo.findById(id).orElse(null);
-			
+public ResponseEntity<Map<String, Boolean>> deleteClaim(@PathVariable Long id) throws ResourceNotFoundException{
+	 Optional<Claim> optionalClaim  = repo.findById(id);
+	 if (!optionalClaim.isPresent()) {
+	      throw new ResourceNotFoundException("No Claim found with the id: " + id);
+	    }	
 	
-	repo.delete(claim);
+	repo.delete(optionalClaim.get());
 	Map<String, Boolean> response = new HashMap<>();
 	response.put("deleted", Boolean.TRUE);
 	return ResponseEntity.ok(response);
@@ -82,6 +84,9 @@ public ResponseEntity<Claim> getClaimById(@PathVariable Long id) throws Resource
 	    }	
 	return  new ResponseEntity<>(optionalClaim.get(), HttpStatus.OK);
 }
+
+
+
 @GetMapping("retreive-claim-byType/{Claim-type}")
 @ResponseBody
 public List<Claim>getClaimsBytype(@PathVariable("Claim-type") Type type){
@@ -96,6 +101,25 @@ public  void checkSolution(@PathVariable("id") Long idclaim){
 	service.setResponsemessage(idclaim);
 	
 }
+@PutMapping("/update-claim/{id}")
+public ResponseEntity<Claim> updateClaim(@PathVariable(value = "id") Long ClaimId,
+		@Valid @RequestBody Claim claimDetails) throws ResourceNotFoundException {
+	Claim claim = repo.findById(ClaimId)
+			.orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + ClaimId));
+
+	claim.setDescription(claimDetails.getDescription());
+	claim.setResponse(claimDetails.getResponse());
+	claim.setType(claimDetails.getType());
+	claim.setTopicOfclaim(claimDetails.getTopicOfclaim());
+	final Claim updatedClaim = repo.save(claim);
+	return ResponseEntity.ok(updatedClaim);
+}
+
+
+
+
+
+
 }
 //@GetMapping("retreive-claims-byIdUser/{iduser}")
 //@ResponseBody

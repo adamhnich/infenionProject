@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table(name="user")
@@ -43,6 +45,7 @@ public class User implements Serializable {
     private String name;
     private String lastName;
     private Boolean active;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy="user")
+   
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
      private List<Claim> claims;
 }

@@ -16,6 +16,8 @@ import tn.esprit.spring.entities.Claim;
 import tn.esprit.spring.entities.FrequentClaims;
 import tn.esprit.spring.entities.Type;
 import tn.esprit.spring.entities.User;
+import tn.esprit.spring.exceptions.ResourceNotFoundException;
+import tn.esprit.spring.exceptions.GlobalExceptionHandler;
 import tn.esprit.spring.repository.ClaimRepository;
 import tn.esprit.spring.repository.FreqentlyClaimsRepository;
 import tn.esprit.spring.repository.UserRepository;
@@ -36,8 +38,8 @@ public class ServiceClaim  implements ServiceClaimIT{
 	public Claim addClaim(Claim c,Long idUser) {
 	
 		User user=repoUser.getById(idUser);
-	   c.setUser(user);
-	 
+	c.setUser(user);
+	
 	  
 		
 	
@@ -55,13 +57,6 @@ public class ServiceClaim  implements ServiceClaimIT{
 	
 
 	
-	@Override
-	public Claim updateClaim(Claim c,Long idUser) {
-		// TODO Auto-generated method stub
-		User user=repoUser.getById(idUser);
-		c.setUser(user);
-		return repo.save(c);
-	}
 
 	@Override
 	public Optional<Claim> retrieveClaims(Long id) {
