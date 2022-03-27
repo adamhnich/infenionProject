@@ -31,8 +31,8 @@ import javax.mail.SendFailedException;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
-    private final PasswordEncoder passwordEncoder;
     private JavaMailSender emailSender;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
     EmailServiceImpl EmailServiceImp;
     @Override
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("Saving new user {} to the database", user.getName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        EmailServiceImp.sendSimpleMessage(user.getEmail(), "add new user", "welcom");
+        EmailServiceImp.sendSimpleMessage(user.getEmail(), "add new user", "welcom to our application ");
         return userRepo.save(user);
     }
     @Override
