@@ -1,0 +1,5 @@
+package tn.esprit.infenion.model;
+
+public enum Domaine {
+    INFORMATION_TECHNOLOGY,COMMUNICATIONS,LOGISTICS,WEB_DEVELOPER,SOFTWARE_ENGINEER_ACCOUNTANT,
+}
