@@ -1,5 +1,7 @@
 package tn.esprit.infenion.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -21,20 +23,28 @@ public class Profile {
 
     @OneToOne(mappedBy = "profile")
     private UploadImageProfil image ;
-    @Enumerated
-    public Domaine domaine ;
 
-    public Domaine getDomaine() {
-        return domaine;
-    }
 
-    public void setDomaine(Domaine domaine) {
-        this.domaine = domaine;
-    }
+
+    private Long FollowersNbr;
+    @JsonIgnore
+    @Enumerated(EnumType.STRING)
+    private BadageQuizz badageQuizz;
+    @JsonIgnore
+    @Enumerated(EnumType.STRING)
+    private Poupilarite poupilarite;
+    @JsonIgnore
+    @Enumerated(EnumType.STRING)
+    private ReactiviteBadge reactiviteBadge ;
+
 
     @ManyToOne
     @JoinColumn(name="iduser",referencedColumnName = "iduser")
     private User iduser;
+
+    @ManyToOne
+    @JoinColumn(name="idDomaine",referencedColumnName = "idDomaine")
+        private Domaine idDomaine;
 
     public UploadImageProfil getImage() {
         return image;
@@ -44,7 +54,13 @@ public class Profile {
         this.image = image;
     }
 
+    public Domaine getIdDomaine() {
+        return idDomaine;
+    }
 
+    public void setIdDomaine(Domaine idDomaine) {
+        this.idDomaine = idDomaine;
+    }
 
     @NotBlank
     @Size(min=8, max=8)
@@ -102,5 +118,37 @@ public class Profile {
 
     public void setIduser(User iduser) {
         this.iduser = iduser;
+    }
+
+    public Long getFollowersNbr() {
+        return FollowersNbr;
+    }
+
+    public void setFollowersNbr(Long followersNbr) {
+        FollowersNbr = followersNbr;
+    }
+
+    public BadageQuizz getBadageQuizz() {
+        return badageQuizz;
+    }
+
+    public void setBadageQuizz(BadageQuizz badageQuizz) {
+        this.badageQuizz = badageQuizz;
+    }
+
+    public Poupilarite getPoupilarite() {
+        return poupilarite;
+    }
+
+    public void setPoupilarite(Poupilarite poupilarite) {
+        this.poupilarite = poupilarite;
+    }
+
+    public ReactiviteBadge getReactiviteBadge() {
+        return reactiviteBadge;
+    }
+
+    public void setReactiviteBadge(ReactiviteBadge reactiviteBadge) {
+        this.reactiviteBadge = reactiviteBadge;
     }
 }

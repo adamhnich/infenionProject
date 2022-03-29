@@ -1,5 +1,36 @@
 package tn.esprit.infenion.model;
 
-public enum Domaine {
-    INFORMATION_TECHNOLOGY,COMMUNICATIONS,LOGISTICS,WEB_DEVELOPER,SOFTWARE_ENGINEER_ACCOUNTANT,
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class Domaine {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long idDomaine;
+
+    String nom ;
+
+    public Long getIdDomaine() {
+        return idDomaine;
+    }
+
+    public void setIdDomaine(Long idDomaine) {
+        this.idDomaine = idDomaine;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Domaine() {
+
+    }
 }

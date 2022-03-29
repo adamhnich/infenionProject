@@ -1,13 +1,13 @@
 package tn.esprit.infenion.Serice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import tn.esprit.infenion.IService.IDomaineService;
 import tn.esprit.infenion.IService.IProfilService;
 import tn.esprit.infenion.Repository.IProfilRepository;
 import tn.esprit.infenion.Repository.IUploadImage;
-import tn.esprit.infenion.model.Profile;
-import tn.esprit.infenion.model.UploadImageProfil;
-import tn.esprit.infenion.model.User;
+import tn.esprit.infenion.model.*;
 
 
 import java.util.List;
@@ -17,6 +17,9 @@ public class ProfilService implements IProfilService {
 
     @Autowired
     IProfilRepository profilRepository ;
+
+    @Autowired
+    IDomaineService domaineService ;
 
 
     @Autowired
@@ -55,7 +58,86 @@ public class ProfilService implements IProfilService {
     }
 
     @Override
+    public Profile AffecterDomaineToProfil(long idDom,long idProfil) {
+        Domaine d = domaineService.findDomaineById(idDom);
+        Profile p = findProfilById(idProfil);
+        p.setIdDomaine(d);
+
+        return updateProfil(p);
+    }
+
+    @Override
     public Profile findProfilById(long id) {
         return this.profilRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Poupilarite poupilarite(Long id) {
+        Profile p = profilRepository.findById(id).orElse(null);
+        if (p.getFollowersNbr() >= 1000) {
+            p.setPoupilarite(Poupilarite.superFamous);
+            profilRepository.save(p);
+        }
+
+        if (p.getFollowersNbr() >= 100) {
+            p.setPoupilarite(Poupilarite.famous);
+            profilRepository.save(p);
+            return p.getPoupilarite();
+        }
+
+
+        if (p.getFollowersNbr() >= 10) {
+            p.setPoupilarite(Poupilarite.pouplar);
+            profilRepository.save(p);
+            return p.getPoupilarite();
+        }
+        return null;
+
+    }
+
+
+    @Override
+    @Scheduled(fixedRate = 5000)
+    public void poupilariteScud() {
+
+        List<Profile>lp = retrieveProfil();
+        for (Profile p :
+                lp) {
+            if(p.getFollowersNbr() == 0){
+
+                p.setPoupilarite(Poupilarite.notfamous);
+                profilRepository.save(p);
+            }
+
+            if (p.getFollowersNbr() <= 10 && p.getFollowersNbr()>0) {
+                p.setPoupilarite(Poupilarite.pouplar);
+                profilRepository.save(p);
+            }
+
+
+            if (p.getFollowersNbr() <= 100 && p.getFollowersNbr() >= 10) {
+                p.setPoupilarite(Poupilarite.famous);
+                profilRepository.save(p);
+            }
+
+
+
+            else{
+
+                p.setPoupilarite(Poupilarite.superFamous);
+                profilRepository.save(p);
+            }
+
+
+
+        }
+
+    }
+
+
+
+    @Override
+    public ReactiviteBadge Reactivite(Long id) {
+        return null;
     }
 }

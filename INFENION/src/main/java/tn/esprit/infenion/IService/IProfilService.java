@@ -1,9 +1,6 @@
 package tn.esprit.infenion.IService;
 
-import tn.esprit.infenion.model.Profile;
-import tn.esprit.infenion.model.UploadImageProfil;
-import tn.esprit.infenion.model.User;
-import tn.esprit.infenion.model.Voyage;
+import tn.esprit.infenion.model.*;
 
 import java.util.List;
 
@@ -22,6 +19,12 @@ public interface IProfilService {
 
     UploadImageProfil saveImage(UploadImageProfil p);
 
+    Profile AffecterDomaineToProfil(long idDom,long idProfil);
+
 
     Profile findProfilById(long id);
+    public void poupilariteScud();
+
+    public ReactiviteBadge Reactivite(Long id );
+    public Poupilarite poupilarite(Long id);
 }

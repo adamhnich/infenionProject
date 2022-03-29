@@ -14,10 +14,7 @@ import tn.esprit.infenion.IService.IVoyageService;
 import tn.esprit.infenion.Serice.MapValidationErrorService;
 import tn.esprit.infenion.Validator.ProfilValidatore;
 import tn.esprit.infenion.Validator.VoyageValidatore;
-import tn.esprit.infenion.model.Profile;
-import tn.esprit.infenion.model.UploadImageProfil;
-import tn.esprit.infenion.model.User;
-import tn.esprit.infenion.model.Voyage;
+import tn.esprit.infenion.model.*;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -90,8 +87,14 @@ public class ProfilController {
 
     @GetMapping("/retrieve-Profil/{profil-id}")
     @ResponseBody
-    public Profile retrieveVoyage(@PathVariable("profil-id") int VoyageId) {
+    public Profile retrieveProfil(@PathVariable("profil-id") int VoyageId) {
         return profilService.findProfilById(VoyageId);  }
+
+    @GetMapping("/affecter/{profil-id}/{domaine-id}")
+    @ResponseBody
+    public Profile affecterDomaine(@PathVariable("profil-id") int profilId,@PathVariable("domaine-id") int domaineId) {
+        return profilService.AffecterDomaineToProfil(domaineId,profilId);  }
+
 
     @PostMapping("/file")
     @ResponseBody
@@ -129,6 +132,7 @@ public class ProfilController {
 
         return pub;
     }
+
 
 
 }
